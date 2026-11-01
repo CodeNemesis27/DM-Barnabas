@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ChurchController;
 use Illuminate\Support\Facades\Route;
 
 // 6 attempts per minute per IP/email slows down password guessing.
@@ -10,5 +11,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    // Next steps: churches and members endpoints go here.
+    Route::get('/churches', [ChurchController::class, 'index']);
 });
