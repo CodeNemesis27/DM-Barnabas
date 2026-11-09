@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('approved_at')->nullable();
             $table->foreignId('requested_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();   // change created_at to date_requested
+            $table->softDeletes();
         });
     }
 

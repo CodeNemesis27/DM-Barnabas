@@ -4,7 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Database\Seeders\ChurchSeeder;
+use Database\Seeders\ClaimSeeder;
 use Database\Seeders\DeathRecordSeeder;
+use Database\Seeders\MemberContributionSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -31,7 +33,9 @@ class DatabaseSeeder extends Seeder
             DistrictSeeder::class,
             ChurchSeeder::class,
             MemberSeeder::class,
-            DeathRecordSeeder::class
+            DeathRecordSeeder::class,
+            MemberContributionSeeder::class,
+            ClaimSeeder::class
         ]);
     }
 }
