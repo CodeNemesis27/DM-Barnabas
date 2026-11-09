@@ -17,6 +17,7 @@ use Laravel\Fortify\Actions\EnsureLoginIsNotThrottled;
 use Laravel\Fortify\Actions\PrepareAuthenticatedSession;
 use Laravel\Fortify\Contracts\RedirectsIfTwoFactorAuthenticatable;
 use Laravel\Fortify\Features;
+use App\Actions\Fortify\EnsureAccountIsApproved;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -82,6 +83,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::authenticateThrough(fn(Request $request): array => array_filter([
             config('fortify.limiters.login') ? null : EnsureLoginIsNotThrottled::class,
             config('fortify.lowercase_usernames') ? CanonicalizeUsername::class : null,
+            EnsureAccountIsApproved::class,
             RedirectIfFilamentMfaEnabled::class,
             Features::enabled(Features::twoFactorAuthentication()) ? RedirectsIfTwoFactorAuthenticatable::class : null,
             AttemptToAuthenticate::class,

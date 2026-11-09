@@ -4,6 +4,8 @@ namespace App\Filament\Resources\Churches\Pages;
 
 use App\Filament\Resources\Churches\ChurchResource;
 use Filament\Actions\DeleteAction;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\RestoreAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditChurch extends EditRecord
@@ -14,6 +16,8 @@ class EditChurch extends EditRecord
     {
         return [
             DeleteAction::make(),
+            ForceDeleteAction::make(),
+            RestoreAction::make(),
         ];
     }
 }

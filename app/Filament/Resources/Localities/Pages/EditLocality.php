@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Filament\Resources\Localities\Pages;
+
+use App\Filament\Resources\Localities\LocalityResource;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ForceDeleteAction;
+use Filament\Actions\RestoreAction;
+use Filament\Resources\Pages\EditRecord;
+
+class EditLocality extends EditRecord
+{
+    protected static string $resource = LocalityResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            DeleteAction::make(),
+            ForceDeleteAction::make(),
+            RestoreAction::make(),
+        ];
+    }
+}

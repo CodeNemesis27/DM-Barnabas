@@ -19,6 +19,8 @@ class UserSeeder extends Seeder
                 'name'  => 'Richard Sombrio',
                 'email' => 'richard.sombrio27@gmail.com',
                 'role'  => 'Admin',
+                'approved_by'  => 1,
+                'approved_at'  => now(),
             ],
             [
                 'name'  => 'Claire Redfield',
@@ -40,6 +42,8 @@ class UserSeeder extends Seeder
                     'password'          => Hash::make('password'),
                     'role'              => $data['role'],
                     'email_verified_at' => now(),
+                    'approved_by'       => $data['approved_by'] ?? null,
+                    'approved_at'       => $data['approved_at'] ?? null,
                 ]
             );
         }

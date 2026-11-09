@@ -20,6 +20,8 @@ return new class extends Migration
             $table->enum('role', ['Admin', 'Clerk', 'Member'])->default('Member');
             $table->text('app_authentication_secret')->nullable();
             $table->text('app_authentication_recovery_codes')->nullable();
+            $table->foreignId('approved_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('approved_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

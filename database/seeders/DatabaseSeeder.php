@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Database\Seeders\ChurchSeeder;
+use Database\Seeders\DeathRecordSeeder;
 use Database\Seeders\UserSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -26,7 +27,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
-            ChurchSeeder::class
+            LocalitySeeder::class,
+            DistrictSeeder::class,
+            ChurchSeeder::class,
+            MemberSeeder::class,
+            DeathRecordSeeder::class
         ]);
     }
 }

@@ -13,6 +13,8 @@ use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -54,6 +56,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     {
         return [
             'email_verified_at' => 'datetime',
+            'approved_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -69,6 +72,11 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
             ? Str::substr($initials, 0, 1) . Str::substr($initials, -1)
             : $initials;
     }
+
+    /**
+     * Shown when someone tries to sign in (or has just registered) while the account is pending approval.
+     */
+    public const PENDING_APPROVAL_MESSAGE = 'Your account is pending approval. You will be able to sign in once an administrator approves it.';
 
     /**
      * Default values for new instances (mirrors the migration default), so `role`
@@ -105,6 +113,10 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
      */
     public function canAccessPanel(Panel $panel): bool
     {
+        if ($this->isPendingApproval()) {
+            return false;
+        }
+
         return match ($panel->getId()) {
             'admin' => $this->isAdmin(),
             'clerk' => $this->isClerk(),
@@ -137,5 +149,39 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     public function homeUrl(): ?string
     {
         return $this->usesStarterKit() ? route('dashboard') : $this->homePanelUrl();
+    }
+
+    public function isApproved(): bool
+    {
+        return $this->approved_by !== null || $this->approved_at !== null;
+    }
+
+    public function isPendingApproval(): bool
+    {
+        return ! $this->isApproved();
+    }
+
+    /**
+     * @return BelongsTo<User, $this>
+     */
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'approved_by');
+    }
+
+    /**
+     * Approve this account, optionally recording who approved it.
+     */
+    public function approve(?self $approver = null): void
+    {
+        $this->forceFill([
+            'approved_by' => $approver?->getKey(),
+            'approved_at' => now(),
+        ])->save();
+    }
+
+    public function members(): HasMany
+    {
+        return $this->hasMany(Member::class);
     }
 }

@@ -16,6 +16,12 @@ use Laravel\Fortify\Contracts\LogoutResponse as LogoutResponseContract;
 use Laravel\Fortify\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
 use App\Filament\Auth\MfaChallenge;
 use Livewire\Livewire;
+use App\Http\Responses\RegisterResponse;
+use Laravel\Fortify\Contracts\RegisterResponse as RegisterResponseContract;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Filament panels: "Sign out" inside a panel ends on the Starter Kit login page too.
         $this->app->bind(FilamentLogoutResponseContract::class, FilamentLogoutResponse::class);
+        $this->app->singleton(RegisterResponseContract::class, RegisterResponse::class);
     }
 
     /**
@@ -42,6 +49,10 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
 
         Livewire::component('filament-mfa-challenge', MfaChallenge::class);
+
+        RateLimiter::for('api-login', function (Request $request) {
+            return Limit::perMinute(5)->by(Str::lower((string) $request->input('email')) . '|' . $request->ip());
+        });
     }
 
     /**

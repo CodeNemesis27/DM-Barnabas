@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('churches', function (Blueprint $table) {
+        Schema::create('localities', function (Blueprint $table) {
             $table->id();
-            $table->string('church_code')->unique();
-            $table->string('church_name')->unique();
-            $table->enum('type', ['Church', 'Company']);
+            $table->string('locality_name')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('churches');
+        Schema::dropIfExists('localities');
     }
 };

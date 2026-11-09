@@ -12,13 +12,21 @@ class ChurchForm
     {
         return $schema
             ->components([
-                TextInput::make('church_code')
-                    ->required(),
                 TextInput::make('church_name')
+                    ->required(),
+                TextInput::make('church_code')
                     ->required(),
                 Select::make('type')
                     ->options(['Church' => 'Church', 'Company' => 'Company'])
                     ->required(),
+                Select::make('locality_id')
+                    ->relationship('locality', 'id')
+                    ->required(),
+                Select::make('district_id')
+                    ->relationship('district', 'id')
+                    ->required(),
+                TextInput::make('church_members')
+                    ->numeric(),
             ]);
     }
 }

@@ -1,17 +1,19 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ChurchController;
-use App\Http\Controllers\Api\MemberController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\DashboardController;
 
-// 6 attempts per minute per IP/email slows down password guessing.
-Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1');
+Route::prefix('v1')->group(function () {
+    Route::post('auth/login', [AuthController::class, 'login'])
+        ->middleware('throttle:api-login');
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [AuthController::class, 'me']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('auth/me', [AuthController::class, 'me']);
+        Route::post('auth/logout', [AuthController::class, 'logout']);
 
-    Route::get('/churches', [ChurchController::class, 'index']);
-    Route::get('/members', [MemberController::class, 'index']);
+        // Fund-wide figures are limited to staff. Add more roles here if they should see them.
+        Route::get('dashboard', DashboardController::class)
+            ->middleware('api.role:Admin,Clerk');
+    });
 });
