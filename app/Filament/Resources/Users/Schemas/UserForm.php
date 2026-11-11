@@ -33,6 +33,9 @@ class UserForm
                     ->options(['Admin' => 'Admin', 'Clerk' => 'Clerk', 'Member' => 'Member'])
                     ->default('Member')
                     ->required(),
+                TextInput::make('approved_by')
+                    ->numeric(),
+                DateTimePicker::make('approved_at'),
                 Textarea::make('app_authentication_secret')
                     ->columnSpanFull(),
                 Textarea::make('app_authentication_recovery_codes')
