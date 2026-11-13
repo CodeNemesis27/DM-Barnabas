@@ -18,16 +18,12 @@ class MembersTable
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
-                    ->searchable(),
                 TextColumn::make('first_name')
                     ->searchable(),
                 TextColumn::make('middle_name')
                     ->searchable(),
                 TextColumn::make('last_name')
                     ->searchable(),
-                TextColumn::make('suffix')
-                    ->badge(),
                 TextColumn::make('gender')
                     ->badge(),
                 TextColumn::make('date_of_birth')
@@ -38,12 +34,6 @@ class MembersTable
                 TextColumn::make('occupation')
                     ->searchable(),
                 TextColumn::make('phone_no')
-                    ->searchable(),
-                TextColumn::make('alternate_phone_no')
-                    ->searchable(),
-                TextColumn::make('facebook_account')
-                    ->searchable(),
-                TextColumn::make('church.id')
                     ->searchable(),
                 TextColumn::make('class')
                     ->badge(),
@@ -73,11 +63,8 @@ class MembersTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                    ForceDeleteBulkAction::make(),
-                    RestoreBulkAction::make(),
-                ]),
-            ]);
+                //
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 }

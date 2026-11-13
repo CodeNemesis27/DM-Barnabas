@@ -15,12 +15,15 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use UnitEnum;
 
 class MemberContributionResource extends Resource
 {
     protected static ?string $model = MemberContribution::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBanknotes;
+
+    protected static string | UnitEnum | null $navigationGroup = 'Mortuary';
 
     public static function form(Schema $schema): Schema
     {
